@@ -5,18 +5,21 @@ document.addEventListener("DOMContentLoaded", function() {
     // ATENÇÃO: As imagens agora são locais.
     // Crie uma pasta 'assets' e salve as imagens nela.
     const carretas = [
-        { nome: "Carreta de 14m", comprimento: 14, largura: 2.5, alturaMaxima: 2.7, quantidadeMaxima: 28, imagem: "assets/carreta_14.png" },
-        { nome: "Carreta de 14.6m", comprimento: 14.6, largura: 2.5, alturaMaxima: 2.7, quantidadeMaxima: 28, imagem: "assets/carreta.jpg" }, // Pode usar a mesma imagem
         { nome: "Carreta de 15.2m", comprimento: 15.2, largura: 2.5, alturaMaxima: 2.7, quantidadeMaxima: 30, imagem: "assets/carreta.jpg" }, // Pode usar a mesma imagem
+        { nome: "Carreta de 14.6m", comprimento: 14.6, largura: 2.5, alturaMaxima: 2.7, quantidadeMaxima: 28, imagem: "assets/carreta.jpg" }, // Pode usar a mesma imagem
     ];
     const trucks = [
-        { nome: "Truck de 10.4m", comprimento: 10.4, largura: 2.4, alturaMaxima: 2.7, quantidadeMaxima: 20, imagem: "assets/truck.jpg" },
+        { nome: "Truck de 10.4m", comprimento: 10.4, largura: 2.4, alturaMaxima: 2.7, quantidadeMaxima: 16, imagem: "assets/truck.jpg" },
+        { nome: "Truck de 9.7m", comprimento: 9.7, largura: 2.4, alturaMaxima: 2.7, quantidadeMaxima: 16, imagem: "assets/truck.jpg" },
+        { nome: "Truck de 8.7m", comprimento: 8.7, largura: 2.4, alturaMaxima: 2.7, quantidadeMaxima: 14, imagem: "assets/truck.jpg" },
     ];
     const van = [
-        { nome: "VAN 01", comprimento: 3.10, largura: 1.8, alturaMaxima: 1.9, quantidadeMaxima: 3, imagem: "assets/van.jpg" }
+        { nome: "VAN 01", comprimento: 3.10, largura: 1.8, alturaMaxima: 1.9, quantidadeMaxima: 3, imagem: "assets/van.jpg" },
     ];
     const container = [
-        { nome: "CONTAINER 40'HC", comprimento: 12, largura: 2.35, alturaMaxima: 2.58, quantidadeMaxima: 21, imagem: "assets/container.jpg" }
+        { nome: "CONTAINER 45'HC", comprimento: 13, largura: 2.35, alturaMaxima: 2.58, quantidadeMaxima: 26, imagem: "assets/container.jpg" },
+        { nome: "CONTAINER 40'HC", comprimento: 12, largura: 2.35, alturaMaxima: 2.58, quantidadeMaxima: 25, imagem: "assets/container.jpg" },
+        { nome: "CONTAINER 20'DC", comprimento: 5.88, largura: 2.35, alturaMaxima: 2.26, quantidadeMaxima: 10, imagem: "assets/container.jpg" },
     ];
     const tiposVeiculo = {
         carreta: carretas,
