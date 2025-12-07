@@ -1,12 +1,12 @@
 const veiculosDB = {
     carreta: [
-        { nome: "Carreta 15.2m", c: 15.20, l: 2.50, h: 2.70 },
+        { nome: "Carreta 15.4m", c: 15.20, l: 2.50, h: 2.70 },
         { nome: "Carreta 14.6m", c: 14.60, l: 2.50, h: 2.70 }
     ],
     truck: [
-        { nome: "Truck 10.4m", c: 10.40, l: 2.40, h: 2.60 },
-        { nome: "Truck 9.7m", c: 9.70, l: 2.40, h: 2.60 },
-        { nome: "Truck 8.7m", c: 8.70, l: 2.40, h: 2.60 }
+        { nome: "Truck 10.4m", c: 10.40, l: 2.40, h: 2.70 },
+        { nome: "Truck 9.7m", c: 9.70, l: 2.40, h: 2.70 },
+        { nome: "Truck 8.5m", c: 8.50, l: 2.40, h: 2.70 }
 
     ],
 
