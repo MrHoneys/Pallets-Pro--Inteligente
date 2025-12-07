@@ -20,7 +20,8 @@ Com ela você descobre exatamente quantas peças, caixas ou paletes cabem dentro
 
 ## 🖼️ Preview
 
-<img src="https://via.placeholder.com/900x500.png?text=Pallets+Pro+-+Visualização+3D+do+Carregamento" alt="Preview da ferramenta Pallets Pro" />
+<img width="1919" height="859" alt="001" src="https://github.com/user-attachments/assets/05e50996-2306-4d4b-8929-6186df956312" />
+<img width="1919" height="872" alt="002" src="https://github.com/user-attachments/assets/6ee96577-ba44-46ba-9c10-866bd723bad7" />
 
 > *Exemplo da visualização 3D interativa dentro do caminhão (substitua pela sua screenshot real)*
 
