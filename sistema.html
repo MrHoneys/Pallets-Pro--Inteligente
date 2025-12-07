@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pallets Pro - Inteligente</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0d1117;
+            color: #e6e6e6;
+        }
+        .card {
+            background: #111827;
+            border: 1px solid #1f2937;
+            border-radius: 1.5rem;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-8px);
+            border-color: #3b82f6;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+        }
+        .input {
+            background: #0f172a;
+            border: 1px solid #1e293b;
+            padding: 14px;
+            border-radius: 12px;
+            color: white;
+        }
+        .input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 4px #3b82f660;
+        }
+        .best {
+            border-left: 6px solid #10b981;
+        }
+        canvas {
+            image-rendering: crisp-edges;
+        }
+
+        .footer-gradient {
+    background: linear-gradient(to top, #000000, #0d1117 60%);
+     }
+    </style>
+</head>
+<body class="min-h-screen">
+
+<div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+
+    <header class="text-center mb-12">
+        <h1 class="text-5xl font-extrabold text-blue-400">Pallets Pro</h1>
+        <p class="text-gray-400 text-lg mt-2">Cálculo inteligente e otimizado de carga</p>
+    </header>
+
+    <!-- FORMULÁRIO -->
+    <div class="card mb-12">
+        <form id="pallet-form" class="grid md:grid-cols-2 gap-10">
+
+            <div>
+                <label class="text-xl font-bold mb-3 block">Tipo de Veículo</label>
+                <select id="vehicle-type" class="input w-full text-lg">
+                    <option value="carreta">Carreta</option>
+                    <option value="truck">Truck</option>
+                    <option value="van">Van / VUC</option>
+                    <option value="container">Container</option>
+                </select>
+
+                <label class="text-xl font-bold mt-8 mb-3 block">Dimensões do Pallet (m)</label>
+
+                <div class="flex justify-between text-gray-400 font-semibold text-lg mb-3">
+                    <span>Comprimento</span>
+                    <span>Largura</span>
+                    <span>Altura</span>
+                </div>
+
+                <div class="grid grid-cols-3 gap-4">
+                    <input id="length" type="number" step="0.01" value="1.20" class="input" placeholder="1.20">
+                    <input id="width"  type="number" step="0.01" value="1.00" class="input" placeholder="1.00">
+                    <input id="height" type="number" step="0.01" value="1.80" class="input" placeholder="1.80">
+                </div>
+            </div>
+
+            <div class="flex flex-col justify-center gap-6">
+                <button type="submit" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-5 rounded-xl text-xl shadow-lg transition">
+                    Calcular Melhor Opção
+                </button>
+                <button type="button" id="clear-form" class="bg-gray-700 hover:bg-gray-600 py-4 text-lg rounded-xl transition">
+                    Limpar Resultados
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- LOADING -->
+    <div id="loading" class="hidden text-center py-16">
+        <div class="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
+        <p class="text-blue-400 mt-6 text-xl">Calculando a melhor disposição...</p>
+    </div>
+
+    <!-- RESULTADOS -->
+    <div id="results" class="hidden">
+        <h2 class="text-4xl font-bold text-center mb-12 text-green-400">Melhores Resultados</h2>
+        <div id="results-container" class="grid md:grid-cols-2 xl:grid-cols-3 gap-8"></div>
+    </div>
+</div>
+
+<footer class="footer-gradient mt-16 py-12 border-t border-gray-800">
+    <div class="max-w-6xl mx-auto px-6">
+
+        <div class="grid md:grid-cols-3 gap-10 text-center md:text-left">
+
+            <div>
+                <h3 class="text-xl font-bold text-blue-400 mb-3">Pallets Pro</h3>
+                <p class="text-gray-400 text-sm">
+                    Sistema inteligente para cálculo otimizado de carga e disposição de pallets.
+                </p>
+            </div>
+
+            <div>
+                <h3 class="text-lg font-semibold text-gray-300 mb-3">Links Úteis</h3>
+                <ul class="space-y-2 text-gray-400">
+                    <li><a href="index.html" class="hover:text-blue-400 transition">Início</a></li>
+                    <li><a href="sistema.html" class="hover:text-blue-400 transition">Sistema</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h3 class="text-lg font-semibold text-gray-300 mb-3">Contato</h3>
+                <p class="text-gray-400 text-sm">Me encontre no LinkedIn</p>
+
+                <a href="https://www.linkedin.com/in/julio-cezar-de-paula-baldo-51774321a/" 
+                   target="_blank"
+                   class="text-blue-400 hover:text-blue-300 font-semibold mt-2 block transition">
+                    🔗 LinkedIn
+                </a>
+            </div>
+        </div>
+
+        <div class="text-center text-gray-600 text-sm mt-10 pt-6 border-t border-gray-800">
+            © 2025 Pallets Pro • Todos os direitos reservados
+        </div>
+
+    </div>
+</footer>
+
+
+
+<script src="script.js"></script>
+
+</body>
+</html>
