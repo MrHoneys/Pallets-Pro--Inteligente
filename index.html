@@ -1,157 +1,113 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Calculadora de Pallets</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pallets Pro - Inteligente</title>
+
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+
     <style>
         body {
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Inter', sans-serif;
+            background: #0d1117;
+            color: #e6e6e6;
         }
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
+        .card {
+            background: #111827;
+            border: 1px solid #1f2937;
+            border-radius: 1.5rem;
+            padding: 2rem;
+            transition: all 0.3s ease;
         }
-        ::-webkit-scrollbar-track {
-            background: #1f2937; /* gray-800 */
+        .card:hover {
+            transform: translateY(-8px);
+            border-color: #3b82f6;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
         }
-        ::-webkit-scrollbar-thumb {
-            background: #4b5563; /* gray-600 */
-            border-radius: 4px;
+        .input {
+            background: #0f172a;
+            border: 1px solid #1e293b;
+            padding: 14px;
+            border-radius: 12px;
+            color: white;
         }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #6b7280; /* gray-500 */
+        .input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 4px #3b82f660;
+        }
+        .best {
+            border-left: 6px solid #10b981;
+        }
+        canvas {
+            image-rendering: crisp-edges;
         }
     </style>
 </head>
+<body class="min-h-screen">
 
-<body class="bg-gray-900 text-gray-200 min-h-screen p-4 md:p-8">
+<div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
 
-    <div class="w-full max-w-screen-2xl mx-auto">
-    
-        <header class="mb-8">
-            <h1 class="text-3xl font-bold text-blue-500">
-                Calculadora de Pallets
-            </h1>
-            <p class="text-gray-400">Sistema de Gerenciamento de Carga</p>
-        </header>
+    <header class="text-center mb-12">
+        <h1 class="text-5xl font-extrabold text-blue-400">Pallets Pro</h1>
+        <p class="text-gray-400 text-lg mt-2">Cálculo inteligente e otimizado de carga</p>
+    </header>
 
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        
-            <div class="lg:col-span-3 space-y-8">
+    <!-- FORMULÁRIO -->
+    <div class="card mb-12">
+        <form id="pallet-form" class="grid md:grid-cols-2 gap-10">
 
-                <div class="bg-gray-800 rounded-lg shadow-lg p-6">
-                    <form id="pallet-form" class="space-y-6">
-                        
-                        <fieldset>
-                            <legend class="flex items-center text-lg font-semibold text-gray-100 mb-3">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-500" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
-                                </svg>
-                                Escolha o Tipo de Veículo:
-                            </legend>
-                            <select id="vehicle-type" name="vehicle-type" 
-                                class="w-full border border-gray-600 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 text-gray-100 bg-gray-700">
-                                <option value="carreta">🚚 Carreta</option>
-                                <option value="truck">🚛 Truck</option>
-                                <option value="van">🚐 Van</option>
-                                <option value="container">🛳️ Container</option>
-                            </select>
-                        </fieldset>
+            <div>
+                <label class="text-xl font-bold mb-3 block">Tipo de Veículo</label>
+                <select id="vehicle-type" class="input w-full text-lg">
+                    <option value="carreta">Carreta</option>
+                    <option value="truck">Truck</option>
+                    <option value="van">Van / VUC</option>
+                    <option value="container">Container</option>
+                </select>
 
-                        <fieldset>
-                            <legend class="flex items-center text-lg font-semibold text-gray-100 mb-4">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                  <path stroke-linecap="round" stroke-linejoin="round" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.414M4 4l5.172 5.172m0 0H4m5.172 0V4m10.828 10.828l-5.172-5.172m0 0h5.172m-5.172 0v5.172" />
-                                </svg>
-                                Dimensões do Pallet (em metros):
-                            </legend>
-                            <div class="space-y-4">
-                                <div>
-                                    <label for="length" class="flex items-center text-gray-300 text-sm font-semibold mb-1">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" /></svg>
-                                        Comprimento do Pallet (m):
-                                    </label>
-                                    <input type="number" id="length" name="length" step="0.01" min="0" required value="1.0" 
-                                        class="w-full border border-gray-600 rounded-lg px-4 py-3 text-gray-100 bg-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ex: 1.0">
-                                </div>
-                                <div>
-                                    <label for="width" class="flex items-center text-gray-300 text-sm font-semibold mb-1">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 16V4m0 12h10M7 16l-4-4m4 4l4-4m6 0v12m0-12h-4m4 0l-4-4m4 4l-4 4" /></svg>
-                                        Largura do Pallet (m):
-                                    </label>
-                                    <input type="number" id="width" name="width" step="0.01" min="0" required value="1.2"
-                                        class="w-full border border-gray-600 rounded-lg px-4 py-3 text-gray-100 bg-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ex: 1.2">
-                                </div>
-                                <div>
-                                    <label for="height" class="flex items-center text-gray-300 text-sm font-semibold mb-1">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 8h16M4 16h16M8 4v16M16 4v16" /></svg>
-                                        Altura do Pallet (m):
-                                    </label>
-                                    <input type="number" id="height" name="height" step="0.01" min="0" required value="1.8"
-                                        class="w-full border border-gray-600 rounded-lg px-4 py-3 text-gray-100 bg-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ex: 1.8">
-                                </div>
-                            </div>
-                        </fieldset>
+                <label class="text-xl font-bold mt-8 mb-3 block">Dimensões do Pallet (m)</label>
 
-                        <div class="flex flex-wrap gap-4 pt-4">
-                            <button type="submit" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg transform transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 uppercase tracking-wider">
-                                Calcular
-                            </button>
-                            <button type="reset" id="clear-form" class="flex-1 bg-transparent border border-gray-600 hover:bg-gray-700 text-gray-300 font-bold py-3 px-6 rounded-lg shadow-lg transform transition-all focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 uppercase tracking-wider">
-                                Limpar
-                            </button>
-                        </div>
-                    </form>
+                <div class="flex justify-between text-gray-400 font-semibold text-lg mb-3">
+                    <span>Comprimento</span>
+                    <span>Largura</span>
+                    <span>Altura</span>
                 </div>
 
-                <div class="text-center opacity-70">
-                    <img src="assets/loading.gif" alt="Carregando..." class="mx-auto w-16 h-16 hidden" id="loading-gif">
+                <div class="grid grid-cols-3 gap-4">
+                    <input id="length" type="number" step="0.01" value="1.20" class="input" placeholder="1.20">
+                    <input id="width"  type="number" step="0.01" value="1.00" class="input" placeholder="1.00">
+                    <input id="height" type="number" step="0.01" value="1.80" class="input" placeholder="1.80">
                 </div>
-
-                <div id="results" class="bg-gray-800 rounded-lg shadow-lg hidden">
-                    <h2 class="flex items-center text-lg font-semibold text-gray-100 p-4 border-b border-gray-700">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-500" viewBox="0 0 20 20" fill="currentColor">
-                            <path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a1 1 0 011-1h14a1 1 0 110 2H3a1 1 0 01-1-1zM2 15a1 1 0 011-1h14a1 1 0 110 2H3a1 1 0 01-1-1z" />
-                        </svg>
-                        Resultados
-                    </h2>
-                    <div class="overflow-x-auto rounded-b-lg">
-                        <table class="min-w-full table-auto">
-                            <thead class="bg-gray-700 text-gray-300 text-sm uppercase">
-                                <tr>
-                                    <th class="px-4 py-3 text-left font-semibold">Modelo</th>
-                                    <th class="px-4 py-3 text-left font-semibold">Pallets</th>
-                                    <th class="px-4 py-3 text-left font-semibold">Altura (M)</th>
-                                    <th class="px-4 py-3 text-left font-semibold">Camadas</th>
-                                    <th class="px-4 py-3 text-left font-semibold">Largura (M)</th>
-                                    <th class="px-4 py-3 text-left font-semibold">Cubagem (M³)</th>
-                                    <th class="px-4 py-3 text-left font-semibold">Status</th>
-                                </tr>
-                            </thead>
-                            <tbody id="results-table-body" class="text-gray-200 divide-y divide-gray-700">
-                                </tbody>
-                        </table>
-                    </div>
-                </div>
-
             </div>
 
-        </div>
-
-        <footer class="text-gray-500 text-center py-8 mt-12 border-t border-gray-800">
-            <p class="text-sm">&copy; 2024 Calculadora de Pallets - Sistema de Gerenciamento de Carga | Todos os direitos reservados.</p>
-        </footer>
+            <div class="flex flex-col justify-center gap-6">
+                <button type="submit" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-5 rounded-xl text-xl shadow-lg transition">
+                    Calcular Melhor Opção
+                </button>
+                <button type="button" id="clear-form" class="bg-gray-700 hover:bg-gray-600 py-4 text-lg rounded-xl transition">
+                    Limpar Resultados
+                </button>
+            </div>
+        </form>
     </div>
 
+    <!-- LOADING -->
+    <div id="loading" class="hidden text-center py-16">
+        <div class="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
+        <p class="text-blue-400 mt-6 text-xl">Calculando a melhor disposição...</p>
+    </div>
 
-    <script src="script.js"></script>
+    <!-- RESULTADOS -->
+    <div id="results" class="hidden">
+        <h2 class="text-4xl font-bold text-center mb-12 text-green-400">Melhores Resultados</h2>
+        <div id="results-container" class="grid md:grid-cols-2 xl:grid-cols-3 gap-8"></div>
+    </div>
+</div>
+
+<script src="script.js"></script>
 
 </body>
 </html>
