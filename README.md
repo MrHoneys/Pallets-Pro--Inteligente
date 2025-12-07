@@ -38,7 +38,7 @@ Com ela você descobre exatamente quantas peças, caixas ou paletes cabem dentro
 ## ▶️ Como usar
 
 É só abrir no navegador!  
-Acesse aqui: [https://seu-usuario.github.io/pallets-pro-inteligente](https://seu-usuario.github.io/pallets-pro-inteligente)
+Acesse aqui: [https://seu-usuario.github.io/pallets-pro-inteligente](https://seu-usuario.github.io/pallets-pro-inteligente](https://mrhoneys.github.io/Pallets-Pro--Inteligente/)
 
 Ou faça localmente:
 
