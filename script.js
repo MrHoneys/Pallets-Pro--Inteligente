@@ -7,71 +7,66 @@ const veiculosDB = {
         { nome: "Truck 10.4m", c: 10.40, l: 2.40, h: 2.70 },
         { nome: "Truck 9.7m", c: 9.70, l: 2.40, h: 2.70 },
         { nome: "Truck 8.5m", c: 8.50, l: 2.40, h: 2.70 }
-
     ],
-
-    van: [{ nome: "VAN 3.1m", c: 3.10, l: 1.80, h: 1.90 }],
-    
+    van: [
+        { nome: "VAN 3.1m", c: 3.10, l: 1.80, h: 1.90 }
+    ],
     container: [
         { nome: "45' HC", c: 13.50, l: 2.35, h: 2.58 },
         { nome: "40' HC", c: 12.00, l: 2.35, h: 2.58 },
-        { nome: "20' DC", c: 5.88, l: 2.35, h: 2.26 },
+        { nome: "20' DC", c: 5.88, l: 2.35, h: 2.26 }
     ]
 };
 
+function parseInputValue(value) {
+    // Substitui vírgula por ponto e limita a 3 dígitos antes da vírgula/ponto
+    value = value.replace(",", ".");
+    const parts = value.split(".");
+    if (parts[0].length > 3) parts[0] = parts[0].slice(0, 3);
+    if (parts[1]) parts[1] = parts[1].slice(0, 2); // opcional: limita 2 casas decimais
+    return parseFloat(parts.join("."));
+}
+
 function desenharVisual(canvas, colunas, linhas) {
     const ctx = canvas.getContext("2d");
-    
-    // Tamanho responsivo do canvas
     const containerWidth = canvas.parentElement.parentElement.clientWidth;
     const size = Math.min(containerWidth * 10.25, 1020);
 
     canvas.width = size;
     canvas.height = size;
 
-    // Fundo
     ctx.fillStyle = "#0f172a";
     ctx.fillRect(0, 0, size, size);
 
     const margem = 30;
-
-    // AQUI É A MÁGICA: tamanho inteligente baseado no número de colunas
     let larguraCelula = (size - margem * 1) / colunas;
     let alturaCelula = (size - margem * 1) / linhas;
 
-    // Regras inteligentes pra nunca estourar e sempre ficar bonito
     if (colunas >= 12) {
-        // Muitas colunas (12, 13, 14) → pallets menores, mas ainda grandes e legíveis
         larguraCelula = Math.min(larguraCelula, 92);
         alturaCelula = Math.min(alturaCelula, 110);
     } else if (colunas >= 10) {
-        // 10 ou 11 colunas → pallets médios/grandes
         larguraCelula = Math.min(larguraCelula, 115);
         alturaCelula = Math.min(alturaCelula, 135);
     } else {
-        // Poucas colunas (8, 9) → pallets GIGANTES
         larguraCelula = Math.min(larguraCelula, 150);
         alturaCelula = Math.min(alturaCelula, 170);
     }
 
-    // Garante tamanho mínimo pra letra ser legível
     larguraCelula = Math.max(larguraCelula, 75);
     alturaCelula = Math.max(alturaCelula, 85);
 
-    // Centralização perfeita
     const totalW = larguraCelula * colunas;
     const totalH = alturaCelula * linhas;
     const offsetX = (size - totalW) / 2;
     const offsetY = (size - totalH) / 2;
 
     let numero = 1;
-
     for (let x = 0; x < colunas; x++) {
         for (let y = 0; y < linhas; y++) {
             const px = offsetX + x * larguraCelula;
             const py = offsetY + y * alturaCelula;
 
-            // Quadrado verde com efeito 3D
             ctx.fillStyle = "#22c55e";
             ctx.fillRect(px + 10, py + 10, larguraCelula - 20, alturaCelula - 20);
 
@@ -79,18 +74,15 @@ function desenharVisual(canvas, colunas, linhas) {
             ctx.lineWidth = 7;
             ctx.strokeRect(px + 10, py + 10, larguraCelula - 20, alturaCelula - 20);
 
-            // Número MUITO GRANDE e com contorno preto (fica 100% legível)
             const fontSize = Math.min(larguraCelula * 0.5, 72);
             ctx.font = `bold ${fontSize}px Inter, sans-serif`;
             ctx.textAlign = "center";
             ctx.textBaseline = "middle";
 
-            // Contorno preto (efeito profissional)
             ctx.strokeStyle = "black";
             ctx.lineWidth = fontSize * 0.2;
             ctx.strokeText(numero, px + larguraCelula / 2, py + alturaCelula / 2);
 
-            // Preenchimento branco
             ctx.fillStyle = "white";
             ctx.fillText(numero++, px + larguraCelula / 2, py + alturaCelula / 2);
         }
@@ -101,25 +93,52 @@ function desenharVisual(canvas, colunas, linhas) {
 document.getElementById("pallet-form").onsubmit = function(e) {
     e.preventDefault();
 
+    // REMOVE mensagens de erro antigas
+    const errorMsgOld = document.getElementById("error-msg");
+    if (errorMsgOld) errorMsgOld.remove();
+
+    const tipo = document.getElementById("vehicle-type").value;
+    const comp = parseInputValue(document.getElementById("length").value);
+    const larg = parseInputValue(document.getElementById("width").value);
+    const alt = parseInputValue(document.getElementById("height").value);
+
+    if (isNaN(comp) || isNaN(larg) || isNaN(alt)) {
+        const form = document.getElementById("pallet-form");
+        const msg = document.createElement("div");
+        msg.id = "error-msg";
+        msg.className = "text-red-500 font-bold text-lg col-span-2 text-center mt-4";
+        msg.innerText = "Preencha todos os campos corretamente com até 3 dígitos.";
+        form.appendChild(msg);
+        return;
+    }
+
+    // VALIDAÇÃO: pallet maior que veículo
+    const palletMaiorQueTodos = veiculosDB[tipo].every(veiculo =>
+        comp > veiculo.c || larg > veiculo.l || alt > veiculo.h
+    );
+
+    if (palletMaiorQueTodos) {
+        const form = document.getElementById("pallet-form");
+        const msg = document.createElement("div");
+        msg.id = "error-msg";
+        msg.className = "text-red-500 font-bold text-lg col-span-2 text-center mt-4";
+        msg.innerText = "O pallet informado é maior que as dimensões de todos os veículos disponíveis para este tipo. Reduza as dimensões para continuar.";
+        form.appendChild(msg);
+        return;
+    }
+
     document.getElementById("loading").classList.remove("hidden");
     document.getElementById("results").classList.add("hidden");
     document.getElementById("results-container").innerHTML = "";
 
     setTimeout(() => {
-        const tipo = document.getElementById("vehicle-type").value;
-        const comp = parseFloat(document.getElementById("length").value);
-        const larg = parseFloat(document.getElementById("width").value);
-        const alt = parseFloat(document.getElementById("height").value);
-
         const resultados = [];
 
         veiculosDB[tipo].forEach(veiculo => {
-            // Orientação A: pallet de comprido no sentido do caminhão
             const A_fileirasComprimento = Math.floor(veiculo.c / comp);
             const A_fileirasLargura = Math.floor(veiculo.l / larg);
             const totalA = A_fileirasComprimento * A_fileirasLargura;
 
-            // Orientação B: pallet de largura no sentido do caminhão
             const B_fileirasComprimento = Math.floor(veiculo.c / larg);
             const B_fileirasLargura = Math.floor(veiculo.l / comp);
             const totalB = B_fileirasComprimento * B_fileirasLargura;
@@ -141,17 +160,15 @@ document.getElementById("pallet-form").onsubmit = function(e) {
             }
         });
 
-        // Ordenar do melhor para o pior
         resultados.sort((a, b) => b.total - a.total);
 
         const container = document.getElementById("results-container");
 
         resultados.forEach((r, i) => {
             const canvasId = "canvas_" + Date.now() + "_" + i;
-
             const card = document.createElement("div");
             card.className = `card ${i === 0 ? "best" : ""} transform transition-all duration-500 opacity-0 translate-y-10`;
-            
+
             card.innerHTML = `
                 <h3 class="text-2xl font-bold mb-3">${r.veiculo}</h3>
                 <p class="text-5xl font-extrabold text-green-400">${r.total}</p>
@@ -174,12 +191,10 @@ document.getElementById("pallet-form").onsubmit = function(e) {
 
             container.appendChild(card);
 
-            // Animação de entrada
             setTimeout(() => {
                 card.classList.remove("opacity-0", "translate-y-10");
             }, i * 150);
 
-            // Desenhar o canvas
             const canvas = document.getElementById(canvasId);
             requestAnimationFrame(() => desenharVisual(canvas, r.fileirasComprimento, r.fileirasLargura));
         });
@@ -189,8 +204,11 @@ document.getElementById("pallet-form").onsubmit = function(e) {
     }, 400);
 };
 
-// LIMPAR
+// LIMPAR RESULTADOS
 document.getElementById("clear-form").onclick = () => {
     document.getElementById("results").classList.add("hidden");
     document.getElementById("results-container").innerHTML = "";
+
+    const errorMsgOld = document.getElementById("error-msg");
+    if (errorMsgOld) errorMsgOld.remove();
 };
