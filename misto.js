@@ -9,7 +9,8 @@ const veiculosDB = {
     {nome:"Truck 8.5m",c:8.50,l:2.40,h:2.70}
   ],
   van: [
-    {nome:"VAN 3.1m",c:3.10,l:1.80,h:1.90}
+    {nome:"VAN 3.1m",c:3.10,l:1.80,h:1.90},
+    {nome: "IVECO BAU 3.9m",c: 3.90, l: 2.10, h: 2.10 }
   ],
   container: [
     {nome:"45' HC",c:13.50,l:2.35,h:2.58}, 
