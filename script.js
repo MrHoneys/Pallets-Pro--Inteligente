@@ -1,6 +1,6 @@
 const veiculosDB = {
     carreta: [
-        { nome: "Carreta 15.4m", c: 15.20, l: 2.50, h: 2.70 },
+        { nome: "Carreta 15.4m", c: 15.40, l: 2.50, h: 2.70 },
         { nome: "Carreta 14.6m", c: 14.60, l: 2.50, h: 2.70 }
     ],
     truck: [
@@ -212,3 +212,4 @@ document.getElementById("clear-form").onclick = () => {
     const errorMsgOld = document.getElementById("error-msg");
     if (errorMsgOld) errorMsgOld.remove();
 };
+
